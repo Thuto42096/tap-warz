@@ -15,6 +15,15 @@ export async function generateMetadata(): Promise<Metadata> {
     title: "Tap Warz - Epic Tapping Battle Game",
     description:
       "Challenge your friends in the ultimate tapping war! Fast-paced competitive mini game built with OnchainKit.",
+    icons: {
+      icon: process.env.NEXT_PUBLIC_APP_ICON,
+      apple: process.env.NEXT_PUBLIC_APP_ICON,
+    },
+    openGraph: {
+      title: process.env.NEXT_PUBLIC_APP_OG_TITLE,
+      description: process.env.NEXT_PUBLIC_APP_OG_DESCRIPTION,
+      images: [process.env.NEXT_PUBLIC_APP_OG_IMAGE],
+    },
     other: {
       "fc:frame": JSON.stringify({
         version: "next",
@@ -25,7 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
             type: "launch_frame",
             name: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME,
             url: URL,
-            splashImageUrl: process.env.NEXT_PUBLIC_SPLASH_IMAGE,
+            splashImageUrl: process.env.NEXT_PUBLIC_APP_SPLASH_IMAGE,
             splashBackgroundColor:
               process.env.NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR,
           },

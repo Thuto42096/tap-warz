@@ -1,6 +1,20 @@
 "use client";
 
 import { type ReactNode, useState, useEffect } from "react";
+import {
+  ConnectWallet,
+  Wallet,
+  WalletDropdown,
+  WalletDropdownDisconnect,
+} from "@coinbase/onchainkit/wallet";
+import {
+  Name,
+  Identity,
+  Address,
+  Avatar,
+  EthBalance,
+} from "@coinbase/onchainkit/identity";
+
 
 type ButtonProps = {
   children: ReactNode;
@@ -517,6 +531,8 @@ type Player = {
   name: string;
   taps: number;
   color: string;
+  walletConnected: boolean;
+  walletAddress?: string;
 };
 
 type TappingWarProps = {
@@ -526,12 +542,14 @@ type TappingWarProps = {
 export function TappingWar({ setActiveTab }: TappingWarProps) {
   const [gameState, setGameState] = useState<GameState>("setup");
   const [players, setPlayers] = useState<Player[]>([
-    { id: 1, name: "Player 1", taps: 0, color: "bg-blue-500" },
-    { id: 2, name: "Player 2", taps: 0, color: "bg-red-500" },
+    { id: 1, name: "Player 1", taps: 0, color: "bg-blue-500", walletConnected: false },
+    { id: 2, name: "Player 2", taps: 0, color: "bg-red-500", walletConnected: false },
   ]);
   const [gameTime, setGameTime] = useState(10); // seconds
   const [timeLeft, setTimeLeft] = useState(gameTime);
   const [winner, setWinner] = useState<Player | null>(null);
+  const [bettingEnabled, setBettingEnabled] = useState(false);
+  const [betAmount, setBetAmount] = useState("0.001"); // ETH
 
   const resetGame = () => {
     setPlayers(prev => prev.map(player => ({ ...player, taps: 0 })));
@@ -539,6 +557,8 @@ export function TappingWar({ setActiveTab }: TappingWarProps) {
     setWinner(null);
     setGameState("setup");
   };
+
+
 
   const startGame = () => {
     resetGame();
@@ -602,42 +622,103 @@ export function TappingWar({ setActiveTab }: TappingWarProps) {
               Get ready for an epic tapping battle! Set up your players and game duration.
             </p>
 
-            <div className="space-y-3">
+            <div className="space-y-4">
               {players.map((player) => (
-                <div key={player.id} className="flex items-center space-x-3">
-                  <div className={`w-4 h-4 rounded-full ${player.color}`}></div>
-                  <input
-                    type="text"
-                    value={player.name}
-                    onChange={(e) => updatePlayerName(player.id, e.target.value)}
-                    className="flex-1 px-3 py-2 bg-[var(--app-card-bg)] border border-[var(--app-card-border)] rounded-lg text-[var(--app-foreground)] placeholder-[var(--app-foreground-muted)] focus:outline-none focus:ring-1 focus:ring-[var(--app-accent)]"
-                    placeholder={`Player ${player.id} name`}
-                  />
+                <div key={player.id} className="space-y-2">
+                  <div className="flex items-center space-x-3">
+                    <div className={`w-4 h-4 rounded-full ${player.color}`}></div>
+                    <input
+                      type="text"
+                      value={player.name}
+                      onChange={(e) => updatePlayerName(player.id, e.target.value)}
+                      className="flex-1 px-3 py-2 bg-[var(--app-card-bg)] border border-[var(--app-card-border)] rounded-lg text-[var(--app-foreground)] placeholder-[var(--app-foreground-muted)] focus:outline-none focus:ring-1 focus:ring-[var(--app-accent)]"
+                      placeholder={`Player ${player.id} name`}
+                    />
+                  </div>
+                  <div className="ml-7">
+                    <Wallet className="z-10">
+                      <ConnectWallet>
+                        <div className="flex items-center space-x-2 px-3 py-2 bg-[var(--app-card-bg)] border border-[var(--app-card-border)] rounded-lg text-sm">
+                          <Icon name="plus" size="sm" />
+                          <span>Connect Wallet {player.id}</span>
+                        </div>
+                      </ConnectWallet>
+                      <WalletDropdown>
+                        <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick>
+                          <Avatar />
+                          <Name />
+                          <Address />
+                          <EthBalance />
+                        </Identity>
+                        <WalletDropdownDisconnect />
+                      </WalletDropdown>
+                    </Wallet>
+                  </div>
                 </div>
               ))}
             </div>
 
-            <div className="flex items-center space-x-3">
-              <label className="text-[var(--app-foreground-muted)]">Game Duration:</label>
-              <select
-                value={gameTime}
-                onChange={(e) => setGameTime(Number(e.target.value))}
-                className="px-3 py-2 bg-[var(--app-card-bg)] border border-[var(--app-card-border)] rounded-lg text-[var(--app-foreground)] focus:outline-none focus:ring-1 focus:ring-[var(--app-accent)]"
-              >
-                <option value={5}>5 seconds</option>
-                <option value={10}>10 seconds</option>
-                <option value={15}>15 seconds</option>
-                <option value={30}>30 seconds</option>
-              </select>
+            <div className="space-y-3">
+              <div className="flex items-center space-x-3">
+                <label className="text-[var(--app-foreground-muted)]">Game Duration:</label>
+                <select
+                  value={gameTime}
+                  onChange={(e) => setGameTime(Number(e.target.value))}
+                  className="px-3 py-2 bg-[var(--app-card-bg)] border border-[var(--app-card-border)] rounded-lg text-[var(--app-foreground)] focus:outline-none focus:ring-1 focus:ring-[var(--app-accent)]"
+                >
+                  <option value={5}>5 seconds</option>
+                  <option value={10}>10 seconds</option>
+                  <option value={15}>15 seconds</option>
+                  <option value={30}>30 seconds</option>
+                </select>
+              </div>
+
+              <div className="flex items-center space-x-3">
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    checked={bettingEnabled}
+                    onChange={(e) => setBettingEnabled(e.target.checked)}
+                    className="rounded border-[var(--app-card-border)] text-[var(--app-accent)] focus:ring-[var(--app-accent)]"
+                  />
+                  <span className="text-[var(--app-foreground-muted)]">Enable Betting</span>
+                </label>
+                {bettingEnabled && (
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="number"
+                      value={betAmount}
+                      onChange={(e) => setBetAmount(e.target.value)}
+                      step="0.001"
+                      min="0.001"
+                      className="w-20 px-2 py-1 bg-[var(--app-card-bg)] border border-[var(--app-card-border)] rounded text-[var(--app-foreground)] text-sm focus:outline-none focus:ring-1 focus:ring-[var(--app-accent)]"
+                    />
+                    <span className="text-[var(--app-foreground-muted)] text-sm">ETH</span>
+                  </div>
+                )}
+              </div>
             </div>
+
+            {bettingEnabled && (
+              <div className="p-3 bg-[var(--app-accent)]/10 border border-[var(--app-accent)]/20 rounded-lg">
+                <p className="text-sm text-[var(--app-foreground-muted)] mb-2">
+                  <Icon name="star" size="sm" className="inline mr-1" />
+                  Betting Mode: Each player must connect their wallet to place a {betAmount} ETH bet
+                </p>
+                <p className="text-xs text-[var(--app-foreground-muted)]">
+                  Winner takes all! Make sure both players have sufficient balance.
+                </p>
+              </div>
+            )}
 
             <div className="flex space-x-3">
               <Button
                 onClick={startGame}
                 icon={<Icon name="zap" size="sm" />}
                 className="flex-1"
+                disabled={bettingEnabled && players.some(p => !p.walletConnected)}
               >
-                Start Battle!
+                {bettingEnabled ? "Start Betting Battle!" : "Start Battle!"}
               </Button>
               <Button
                 variant="outline"
