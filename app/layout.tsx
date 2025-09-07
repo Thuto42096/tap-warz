@@ -16,13 +16,13 @@ export async function generateMetadata(): Promise<Metadata> {
     description:
       "Challenge your friends in the ultimate tapping war! Fast-paced competitive mini game built with OnchainKit.",
     icons: {
-      icon: process.env.NEXT_PUBLIC_APP_ICON,
-      apple: process.env.NEXT_PUBLIC_APP_ICON,
+      icon: process.env.NEXT_PUBLIC_APP_ICON || "/tap-warz-logo.png",
+      apple: process.env.NEXT_PUBLIC_APP_ICON || "/tap-warz-logo.png",
     },
     openGraph: {
-      title: process.env.NEXT_PUBLIC_APP_OG_TITLE,
-      description: process.env.NEXT_PUBLIC_APP_OG_DESCRIPTION,
-      images: [process.env.NEXT_PUBLIC_APP_OG_IMAGE],
+      title: process.env.NEXT_PUBLIC_APP_OG_TITLE || "Tap Warz",
+      description: process.env.NEXT_PUBLIC_APP_OG_DESCRIPTION || "Epic Tapping Battle Game",
+      images: process.env.NEXT_PUBLIC_APP_OG_IMAGE ? [process.env.NEXT_PUBLIC_APP_OG_IMAGE] : [],
     },
     other: {
       "fc:frame": JSON.stringify({
