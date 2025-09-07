@@ -13,7 +13,7 @@ export function Providers(props: { children: ReactNode }) {
         appearance: {
           mode: "auto",
           theme: "mini-app-theme",
-          name: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME,
+          name: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME || "Tap Warz",
           logo: process.env.NEXT_PUBLIC_ICON_URL,
         },
       }}

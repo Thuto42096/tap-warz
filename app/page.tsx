@@ -28,15 +28,46 @@ export default function App() {
   const { setFrameReady, isFrameReady, context } = useMiniKit();
   const [frameAdded, setFrameAdded] = useState(false);
   const [activeTab, setActiveTab] = useState("home");
+  const [readyAttempts, setReadyAttempts] = useState(0);
 
   const addFrame = useAddFrame();
   const openUrl = useOpenUrl();
 
   useEffect(() => {
-    if (!isFrameReady) {
-      setFrameReady();
-    }
-  }, [setFrameReady, isFrameReady]);
+    const initializeFrame = async () => {
+      try {
+        console.log('Initializing frame, isFrameReady:', isFrameReady, 'attempts:', readyAttempts);
+        if (!isFrameReady && readyAttempts < 5) {
+          await setFrameReady();
+          console.log('Frame ready called');
+          setReadyAttempts(prev => prev + 1);
+        }
+      } catch (error) {
+        console.error('Error setting frame ready:', error);
+        setReadyAttempts(prev => prev + 1);
+        // Fallback: try again after a short delay
+        if (readyAttempts < 5) {
+          setTimeout(() => {
+            setFrameReady();
+          }, 1000);
+        }
+      }
+    };
+
+    initializeFrame();
+  }, [setFrameReady, isFrameReady, readyAttempts]);
+
+  // Additional fallback effect that runs after component mount
+  useEffect(() => {
+    const fallbackTimer = setTimeout(() => {
+      if (!isFrameReady) {
+        console.log('Fallback: Force setting frame ready after 3 seconds');
+        setFrameReady();
+      }
+    }, 3000);
+
+    return () => clearTimeout(fallbackTimer);
+  }, [isFrameReady, setFrameReady]);
 
   const handleAddFrame = useCallback(async () => {
     const frameAdded = await addFrame();
@@ -69,6 +100,23 @@ export default function App() {
 
     return null;
   }, [context, frameAdded, handleAddFrame]);
+
+  // Show loading state if frame is not ready after reasonable time
+  if (!isFrameReady && readyAttempts >= 3) {
+    return (
+      <div className="flex flex-col min-h-screen font-sans text-[var(--app-foreground)] mini-app-theme from-[var(--app-background)] to-[var(--app-gray)]">
+        <div className="w-full max-w-md mx-auto px-4 py-3 flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[var(--app-accent)] mx-auto mb-4"></div>
+            <p className="text-[var(--app-foreground-muted)]">Loading Tap Warz...</p>
+            <p className="text-xs text-[var(--app-foreground-muted)] mt-2">
+              Frame ready: {isFrameReady ? 'Yes' : 'No'} | Attempts: {readyAttempts}
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-screen font-sans text-[var(--app-foreground)] mini-app-theme from-[var(--app-background)] to-[var(--app-gray)]">
