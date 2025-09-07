@@ -1,11 +1,22 @@
-# MiniKit Template
+# Tap Warz 🎮
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-onchain --mini`](), configured with:
+An epic tapping battle game built as a Farcaster Mini App! Challenge your friends in the ultimate tapping war with optional betting functionality.
 
-- [MiniKit](https://docs.base.org/builderkits/minikit/overview)
-- [OnchainKit](https://www.base.org/builders/onchainkit)
-- [Tailwind CSS](https://tailwindcss.com)
-- [Next.js](https://nextjs.org/docs)
+This is a [Next.js](https://nextjs.org) project built with:
+
+- [MiniKit](https://docs.base.org/builderkits/minikit/overview) - Farcaster Mini App framework
+- [OnchainKit](https://www.base.org/builders/onchainkit) - Wallet integration and transactions
+- [Tailwind CSS](https://tailwindcss.com) - Styling
+- [Next.js](https://nextjs.org/docs) - React framework
+
+## 🎯 Game Features
+
+- **Two-Player Tapping Battle**: Compete against friends in fast-paced tapping competitions
+- **Dual Wallet Support**: Each player can connect their own wallet for betting
+- **Betting Mode**: Optional ETH betting with winner-takes-all mechanics
+- **Customizable Game Duration**: Choose from 5, 10, 15, or 30-second battles
+- **Real-time Competition**: Live tap counting and timer
+- **Beautiful UI**: Custom Tap Warz branding with vibrant colors
 
 ## Getting Started
 
@@ -87,22 +98,25 @@ The app is wrapped with `MiniKitProvider` in `providers.tsx`, configured with:
 - Sets up Frame SDK listeners
 - Applies Safe Area Insets
 
-## Customization
+## 🎮 How to Play
 
-To get started building your own frame, follow these steps:
+1. **Setup**: Enter player names and optionally enable betting mode
+2. **Connect Wallets** (if betting): Each player connects their wallet
+3. **Set Bet Amount** (if betting): Choose how much ETH to wager
+4. **Battle**: Tap as fast as you can when the timer starts!
+5. **Winner**: Player with the most taps wins (and takes the pot if betting)
 
-1. Remove the DemoComponents:
-   - Delete `components/DemoComponents.tsx`
-   - Remove demo-related imports from `page.tsx`
+## 🚀 Deployment
 
-2. Start building your Frame:
-   - Modify `page.tsx` to create your Frame UI
-   - Update theme variables in `theme.css`
-   - Adjust MiniKit configuration in `providers.tsx`
+The app is deployed at: [https://tap-warz.vercel.app](https://tap-warz.vercel.app)
 
-3. Add your frame to your account:
-   - Cast your frame to see it in action
-   - Share your frame with others to start building your community
+### Environment Configuration
+
+All environment variables are properly configured for production:
+- ✅ Farcaster Frame metadata
+- ✅ OnchainKit API integration
+- ✅ Custom Tap Warz branding
+- ✅ Wallet connection support
 
 ## Learn More
 
@@ -110,4 +124,8 @@ To get started building your own frame, follow these steps:
 - [OnchainKit Documentation](https://docs.base.org/builderkits/onchainkit/getting-started)
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Tailwind CSS Documentation](https://tailwindcss.com/docs)
-taptaptapitup!!!!!
+## 🏆 Ready to Battle?
+
+Cast the frame in Farcaster and challenge your friends to the ultimate tapping war!
+
+**Tap Fast, Win Big!** 🎮⚡
