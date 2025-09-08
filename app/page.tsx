@@ -23,6 +23,7 @@ import { Button } from "./components/DemoComponents";
 import { Icon } from "./components/DemoComponents";
 import { Home } from "./components/DemoComponents";
 import { TappingWar } from "./components/DemoComponents";
+import { sdk } from '@farcaster/frame-sdk';
 
 export default function App() {
   const { setFrameReady, isFrameReady, context } = useMiniKit();
@@ -38,6 +39,7 @@ export default function App() {
       try {
         console.log('Initializing frame, isFrameReady:', isFrameReady, 'attempts:', readyAttempts);
         if (!isFrameReady && readyAttempts < 5) {
+          await sdk.actions.ready();
           await setFrameReady();
           console.log('Frame ready called');
           setReadyAttempts(prev => prev + 1);
@@ -48,6 +50,7 @@ export default function App() {
         // Fallback: try again after a short delay
         if (readyAttempts < 5) {
           setTimeout(() => {
+            sdk.actions.ready().catch(() => {});
             setFrameReady();
           }, 1000);
         }
@@ -62,6 +65,7 @@ export default function App() {
     const fallbackTimer = setTimeout(() => {
       if (!isFrameReady) {
         console.log('Fallback: Force setting frame ready after 3 seconds');
+        sdk.actions.ready().catch(() => {});
         setFrameReady();
       }
     }, 3000);

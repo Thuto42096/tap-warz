@@ -6,7 +6,8 @@ function withValidProperties(
       if (Array.isArray(value)) {
         return value.length > 0;
       }
-      return !!value;
+      // Allow valid strings including "0" and "#000000"
+      return value !== undefined && value !== null && value !== '';
     }),
   );
 }
@@ -28,7 +29,7 @@ export async function GET() {
       screenshotUrls: [],
       iconUrl: process.env.NEXT_PUBLIC_APP_ICON,
       splashImageUrl: process.env.NEXT_PUBLIC_APP_SPLASH_IMAGE,
-      splashBackgroundColor: process.env.NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR,
+      splashBackgroundColor: process.env.NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR || '#000000',
       homeUrl: URL,
       webhookUrl: `${URL}/api/webhook`,
       primaryCategory: process.env.NEXT_PUBLIC_APP_PRIMARY_CATEGORY,
