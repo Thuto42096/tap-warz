@@ -6,7 +6,6 @@ function withValidProperties(
       if (Array.isArray(value)) {
         return value.length > 0;
       }
-      // Allow valid strings including "0" and "#000000"
       return value !== undefined && value !== null && value !== '';
     }),
   );
@@ -40,5 +39,8 @@ export async function GET() {
       ogDescription: process.env.NEXT_PUBLIC_APP_OG_DESCRIPTION,
       ogImageUrl: process.env.NEXT_PUBLIC_APP_OG_IMAGE,
     }),
+    baseBuilder: {
+      allowedAddresses: ["0xF89D2955F307582fe9d6083724662E2dff7D99ff"]
+    }
   });
 }
