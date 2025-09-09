@@ -3,9 +3,9 @@ export async function GET() {
 
   return Response.json({
     accountAssociation: {
-      header: process.env.FARCASTER_HEADER || 'eyJmaWQiOjEzMjQ0MDEsInR5cGUiOiJhdXRoIiwia2V5IjoiMHg1MDVhODdlOTE0OTNmY0E4MWU5MjlFYjk1YWFEZTIwMEQ2NjA5N2E0In0',
+      header: process.env.FARCASTER_HEADER || 'eyJmaWQiOjEzMjQ0MDEsInR5cGUiOiJjdXN0b2R5Iiwia2V5IjoiMHg1NjdmYUVDZTc5YTUzM0EwRjU5RmEzNzkxYkYxYkU1ZDNCMTdiNDI5In0',
       payload: process.env.FARCASTER_PAYLOAD || 'eyJkb21haW4iOiJ0YXAtd2Fyei52ZXJjZWwuYXBwIn0',
-      signature: process.env.FARCASTER_SIGNATURE || 'qDw45uhMVd9F/FcYQgCiSCWALvAkJKqEzty2xFib7C9omVDxYW795CpivOdj72GFiWTGpS8/9nS18evU8HgLsBw=',
+      signature: process.env.FARCASTER_SIGNATURE || 'MHhiOTVmNTc4ZDY2NzA3YTk5YTM5ZDE0NzQzMmVjMTc4ODY5ODI4Nzc3YTRkNjM5YmJlZmM0YmY3MDk3NzA3N2YyMzhjNmQ1NWE3NWE2ZWZiNmJiOTBhYmE5NDY3YzRjNWM0OWFjODkxZWM2M2VmY2U1ZjAxNWU4MjBkOTM5MDg4NDFj',
     },
     baseBuilder: {
       allowedAddresses: ["0xF89D2955F307582fe9d6083724662E2dff7D99ff"]
@@ -27,11 +27,10 @@ export async function GET() {
       heroImageUrl: process.env.NEXT_PUBLIC_APP_HERO_IMAGE || "https://tap-warz.vercel.app/tap-warz-logo.jpeg",
       tagline: process.env.NEXT_PUBLIC_APP_TAGLINE || "Tap Fast, Win Big!",
       ogTitle: process.env.NEXT_PUBLIC_APP_OG_TITLE || "Tap Warz Game",
-      ogDescription: process.env.NEXT_PUBLIC_APP_OG_DESCRIPTION || "Challenge your friends in the ultimate tapping war! Fast-paced competitive mini game.",
+      ogDescription: process.env.NEXT_PUBLIC_APP_OG_DESCRIPTION || "Challenge your friends in the ultimate tapping war!",
       ogImageUrl: process.env.NEXT_PUBLIC_APP_OG_IMAGE || "https://tap-warz.vercel.app/tap-warz-logo.jpeg",
       requiredChains: ["eip155:8453"],
-      noindex: false,
-      screenshotUrls: []
+      noindex: false
     }
   });
 }
