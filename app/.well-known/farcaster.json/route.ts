@@ -14,6 +14,8 @@ export async function GET() {
       version: "1",
       name: process.env.NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME || "Tap Warz",
       homeUrl: URL,
+      imageUrl: `${URL}/tap-warz-logo.jpeg`,
+      aspectRatio: "1:1",
       iconUrl: process.env.NEXT_PUBLIC_APP_ICON || "https://tap-warz.vercel.app/tap-warz-icon.jpg",
       splashImageUrl: process.env.NEXT_PUBLIC_APP_SPLASH_IMAGE || "https://tap-warz.vercel.app/tap-warz-logo.jpeg",
       splashBackgroundColor: process.env.NEXT_PUBLIC_SPLASH_BACKGROUND_COLOR || "#000000",
